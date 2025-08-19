@@ -776,7 +776,7 @@ The techniques demonstrated in this project have broader applications in:
 ### Getting Help
 - **🐛 Bug Reports**: [Open an Issue](https://github.com/yourusername/enhanced-digit-recognition/issues)
 - **💡 Feature Requests**: [Discussion Board](https://github.com/yourusername/enhanced-digit-recognition/discussions)
-- **📧 Direct Contact**: your.email@domain.com
+- **📧 Direct Contact**: ben01993@gmail.com
 - **💬 Community Chat**: [Discord/Slack Link]
 
 ### Documentation
@@ -788,9 +788,9 @@ The techniques demonstrated in this project have broader applications in:
 If you use this project in your research, please cite:
 ```bibtex
 @software{enhanced_digit_recognition,
-  author = {Your Name},
+  author = {Benjamin Smith},
   title = {Enhanced Spoken Digit Recognition System},
-  url = {https://github.com/yourusername/enhanced-digit-recognition},
+  url = {[https://github.com/ben01993/enhanced-digit-recognition](https://github.com/ben01993/Digit-classification-from-wav-audio-files)},
   year = {2024}
 }
 ```
