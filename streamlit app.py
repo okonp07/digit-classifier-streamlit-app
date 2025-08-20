@@ -13,6 +13,65 @@ import os
 import torch.nn as nn
 import torch.nn.functional as F
 
+import urllib.request
+import os
+# Add this function at the top of your file
+@st.cache_data
+def download_model_from_drive(url, filename):
+    """Download model from Google Drive if not exists locally"""
+    if not os.path.exists(filename):
+        try:
+            st.write(f"📥 Downloading {filename}...")
+            with st.spinner(f"Downloading {filename}..."):
+                urllib.request.urlretrieve(url, filename)
+            st.success(f"✅ {filename} downloaded successfully!")
+            return True
+        except Exception as e:
+            st.error(f"❌ Failed to download {filename}: {str(e)}")
+            return False
+    else:
+        st.write(f"✅ {filename} already exists locally")
+        return True
+
+# Model URLs with correct Google Drive direct download URLs
+MODEL_URLS = {
+    'lightweight_digit_model.pth': 'https://drive.google.com/uc?export=download&id=1X03LmpkIu9nQenXhzH1vObPZ9kfjYFeF',
+    'enhanced_digit_model.pth': 'https://drive.google.com/uc?export=download&id=1-XLZLTtF_jjzW32lUDbhcAbO5Mbe9oLq'
+}
+
+# Update your load_models function
+@st.cache_resource
+def load_models():
+    """Download and load both original and enhanced models"""
+    
+    # Download models if needed
+    original_downloaded = download_model_from_drive(
+        MODEL_URLS['lightweight_digit_model.pth'], 
+        'lightweight_digit_model.pth'
+    )
+    enhanced_downloaded = download_model_from_drive(
+        MODEL_URLS['enhanced_digit_model.pth'], 
+        'enhanced_digit_model.pth'
+    )
+    
+    if not (original_downloaded and enhanced_downloaded):
+        st.warning("Some models failed to download. Running in demo mode.")
+        demo_original = DigitPredictor('dummy_original.pth')
+        demo_enhanced = DigitPredictor('dummy_enhanced.pth')
+        return demo_original, demo_enhanced, False
+    
+    try:
+        # Load the downloaded models
+        original_predictor = DigitPredictor('lightweight_digit_model.pth')
+        enhanced_predictor = DigitPredictor('enhanced_digit_model.pth')
+        return original_predictor, enhanced_predictor, True
+    except Exception as e:
+        st.error(f"Error loading models: {str(e)}")
+        demo_original = DigitPredictor('dummy_original.pth')
+        demo_enhanced = DigitPredictor('dummy_enhanced.pth')
+        return demo_original, demo_enhanced, False
+
+
 # Set page configuration
 st.set_page_config(
     page_title="Enhanced Digit Recognition",
